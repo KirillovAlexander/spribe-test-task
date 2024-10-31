@@ -3,7 +3,7 @@ package co.spribe.exchangerate.service;
 import co.spribe.exchangerate.dto.ExchangeRateDto;
 import co.spribe.exchangerate.integration.ExchangeRateProvider;
 import co.spribe.exchangerate.model.ExchangeRateLog;
-import co.spribe.exchangerate.store.ExchangeRateStore;
+import co.spribe.exchangerate.registry.ExchangeRateRegistry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +33,7 @@ class ExchangeRateServiceTest {
     private ExchangeRateLogService exchangeRateLogService;
 
     @Mock
-    private ExchangeRateStore exchangeRateStore;
+    private ExchangeRateRegistry exchangeRateRegistry;
 
     @Mock
     private ExchangeRateProvider exchangeRateProvider;
@@ -49,7 +49,7 @@ class ExchangeRateServiceTest {
         // Given - a base currency and corresponding exchange rates
         String baseCurrency = "EUR";
         ExchangeRateDto exchangeRateDto = new ExchangeRateDto(baseCurrency, Map.of("PLN", BigDecimal.TEN, "GBP", BigDecimal.TWO));
-        when(exchangeRateStore.get(baseCurrency)).thenReturn(exchangeRateDto);
+        when(exchangeRateRegistry.get(baseCurrency)).thenReturn(exchangeRateDto);
 
         // When - calling getExchangeRates
         Mono<ExchangeRateDto> result = exchangeRateService.getExchangeRates(baseCurrency);
@@ -61,14 +61,14 @@ class ExchangeRateServiceTest {
             assertThat(dto.exchangeRates()).containsEntry("GBP", BigDecimal.TWO);
         });
 
-        verify(exchangeRateStore).get(baseCurrency);
+        verify(exchangeRateRegistry).get(baseCurrency);
     }
 
     @Test
     void shouldThrowError_whenExchangeRatesNotAvailable() {
         // Given - a base currency
         String baseCurrency = "EUR";
-        when(exchangeRateStore.get(baseCurrency)).thenReturn(null);
+        when(exchangeRateRegistry.get(baseCurrency)).thenReturn(null);
 
         // When - calling getExchangeRates
         Mono<ExchangeRateDto> result = exchangeRateService.getExchangeRates(baseCurrency);
@@ -79,7 +79,7 @@ class ExchangeRateServiceTest {
                 error -> assertThat(error).hasMessage("Exchange rates not available for currency: " + baseCurrency)
         );
 
-        verify(exchangeRateStore).get(baseCurrency);
+        verify(exchangeRateRegistry).get(baseCurrency);
     }
 
     @Test
@@ -96,7 +96,7 @@ class ExchangeRateServiceTest {
         result.subscribe();
 
         verify(exchangeRateProvider).getExchangeRates(baseCurrency);
-        verify(exchangeRateStore).save(exchangeRateDto);
+        verify(exchangeRateRegistry).save(exchangeRateDto);
 
         // Capture the logs passed to saveAll
         verify(exchangeRateLogService).saveAll(captor.capture());
@@ -135,7 +135,7 @@ class ExchangeRateServiceTest {
         // Verify that the provider method was called
         verify(exchangeRateProvider).getExchangeRates(baseCurrency);
         // Verify that save methods were never called
-        verify(exchangeRateStore, never()).save(any());
+        verify(exchangeRateRegistry, never()).save(any());
         verify(exchangeRateLogService, never()).saveAll(any());
     }
 

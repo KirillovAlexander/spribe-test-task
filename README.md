@@ -35,3 +35,15 @@ A Postman collection is included in the project to simplify testing. The collect
 ## Limitations and Considerations
 
 Due to limitations in the free subscription tier of the Fixer API, only EUR-based exchange rates are supported. As a result, any request for a base currency other than EUR will default to EUR for fetching exchange rates.
+
+## Exchange Rate Registry Implementations
+
+This project includes two implementations of the ExchangeRateRegistry, each designed for handling concurrent access to exchange rate data but with different approaches to synchronization:
+
+- **ExchangeRateInMemoryReentrantLockRegistry**:
+Initially, the registry was implemented using a ReentrantReadWriteLock to ensure thread-safe access to the map of exchange rates. This approach allows us to separate read and write operations: multiple reads can occur simultaneously, while write operations block all other access. However, using a lock on the entire map during writes can become inefficient when there are high volumes of requests, as all threads must wait when a write lock is held.
+
+- **ExchangeRateInMemoryConcurrentRegistry**:
+To improve concurrency, a second registry was implemented using ConcurrentHashMap. Unlike ReentrantReadWriteLock, ConcurrentHashMap locks only the specific bucket affected by a write operation. This finer-grained locking means that other threads can continue accessing or modifying unrelated portions of the map, even while a write is in progress. This implementation is typically better suited for high-traffic scenarios, as it reduces contention and potential bottlenecks caused by locking the entire map.
+
+By providing both implementations, the project allows flexibility in handling concurrent access based on expected request volumes and usage patterns.

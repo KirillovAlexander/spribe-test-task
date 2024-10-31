@@ -4,7 +4,7 @@ import co.spribe.exchangerate.base.IntegrationTestBase;
 import co.spribe.exchangerate.dto.ExchangeRateDto;
 import co.spribe.exchangerate.model.Currency;
 import co.spribe.exchangerate.repository.CurrencyRepository;
-import co.spribe.exchangerate.store.ExchangeRateStore;
+import co.spribe.exchangerate.registry.ExchangeRateRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ class ExchangeRateControllerIntegrationTest extends IntegrationTestBase {
     private CurrencyRepository currencyRepository;
 
     @Autowired
-    private ExchangeRateStore exchangeRateStore;
+    private ExchangeRateRegistry exchangeRateRegistry;
 
     @BeforeEach
     void setUp() {
@@ -39,7 +39,7 @@ class ExchangeRateControllerIntegrationTest extends IntegrationTestBase {
         final Map<String, BigDecimal> exchangeRates = Map.of("PLN", BigDecimal.TEN, "GBP", BigDecimal.TWO);
 
         currencyRepository.save(new Currency(baseCurrency));
-        exchangeRateStore.save(new ExchangeRateDto(baseCurrency, exchangeRates));
+        exchangeRateRegistry.save(new ExchangeRateDto(baseCurrency, exchangeRates));
 
         // When - a GET request is made to retrieve exchange rates for the specified base currency
         webTestClient.get()

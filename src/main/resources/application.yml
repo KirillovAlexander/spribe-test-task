@@ -29,3 +29,9 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
+registry:
+  reentrantLock:
+    enabled: false
+  concurrentHashMap:
+    enabled: true
+

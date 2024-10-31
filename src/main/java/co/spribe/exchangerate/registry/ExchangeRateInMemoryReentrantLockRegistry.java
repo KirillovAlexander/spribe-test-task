@@ -1,7 +1,8 @@
-package co.spribe.exchangerate.store;
+package co.spribe.exchangerate.registry;
 
 import co.spribe.exchangerate.dto.ExchangeRateDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -11,7 +12,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Slf4j
 @Component
-public class ExchangeRateInMemoryStore implements ExchangeRateStore {
+@ConditionalOnProperty(name = "registry.reentrantLock.enabled", havingValue = "true")
+public class ExchangeRateInMemoryReentrantLockRegistry implements ExchangeRateRegistry {
     private final Map<String, Map<String, BigDecimal>> rates = new HashMap<>();
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
