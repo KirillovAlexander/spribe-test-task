@@ -1,0 +1,5 @@
+fixer:
+  api:
+    access-key: test_access_key
+    base-url: http://localhost:8081
+

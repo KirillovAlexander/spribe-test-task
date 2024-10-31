@@ -1,0 +1,34 @@
+version: '3.8'  # Specify the version of Docker Compose
+
+services:
+  exchange-rate-db:
+    image: postgres:15
+    container_name: exchangerate-db
+    environment:
+      POSTGRES_USER: exchangerate_db_user
+      POSTGRES_PASSWORD: exchangerate_db_pass
+      POSTGRES_DB: exchangerate_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - exchangerate-network
+
+  exchange-rate-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: exchangerate-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - exchange-rate-db
+    networks:
+      - exchangerate-network
+
+volumes:
+  postgres_data:
+
+networks:
+  exchangerate-network:
