@@ -1,7 +1,7 @@
 package co.spribe.exchangerate.integration.fixer;
 
+import co.spribe.exchangerate.dto.ExchangeRateDto;
 import co.spribe.exchangerate.integration.ExchangeRateProvider;
-import co.spribe.exchangerate.integration.dto.ExchangeRateDto;
 import co.spribe.exchangerate.integration.fixer.api.FixerApiClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

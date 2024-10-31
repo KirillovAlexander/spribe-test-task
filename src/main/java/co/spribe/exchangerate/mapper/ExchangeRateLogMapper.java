@@ -1,6 +1,6 @@
 package co.spribe.exchangerate.mapper;
 
-import co.spribe.exchangerate.integration.dto.ExchangeRateDto;
+import co.spribe.exchangerate.dto.ExchangeRateDto;
 import co.spribe.exchangerate.model.ExchangeRateLog;
 
 import java.time.Instant;
