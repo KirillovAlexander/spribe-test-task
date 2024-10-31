@@ -68,7 +68,7 @@ public class ExchangeRateSchedulerIntegrationTest extends IntegrationTestBase {
     @Test
     void shouldContinueProcessingWhenOneCurrencyUpdateFails() {
         // Given - Setup mock behaviors
-        currencyRepository.save(new Currency("USD")); // Adding another currency for testing
+        currencyRepository.save(new Currency("USD"));
         setupMockExchangeRates();
 
         // Mock a failure for USD currency
