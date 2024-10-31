@@ -21,7 +21,8 @@ fixer:
     access-key: 7cbf61aef39331e9c55bbf22b7ab0842
 
 scheduler:
-  update-exchange-rates-cron: "0 0 * * * ?"
+  update-exchange-rates-cron: "0 0 * * * *"
+  concurrency-level: 5
 
 springdoc:
   api-docs:

@@ -27,6 +27,7 @@ This project has been intentionally simplified as it’s a test application. Bel
 - **Exception Handling**: Basic error handling is implemented, but it’s incomplete. For a production application, we’d add more robust exception mapping and handling.
 - **Aspect-Oriented Logging**: We could introduce an aspect for logging method entry and exit points.
 - **Profiles**: Application profiles (e.g., `dev`, `prod`, `test`) could be set up for more fine-grained configuration management.
+- **Rate-limiting**: While we utilize parallelism in updating exchange rates, we do not address rate-limiting for the Fixer API. In real-world scenarios, this consideration is crucial to avoid exceeding request limits.
 
 ## Testing the Application
 
