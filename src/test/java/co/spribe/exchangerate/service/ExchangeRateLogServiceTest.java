@@ -1,4 +1,5 @@
 package co.spribe.exchangerate.service;
+
 import co.spribe.exchangerate.model.ExchangeRateLog;
 import co.spribe.exchangerate.repository.ExchangeRateLogRepository;
 import org.junit.jupiter.api.Test;
